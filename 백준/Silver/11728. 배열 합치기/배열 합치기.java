@@ -1,38 +1,50 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
+    // 최종
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-		String[] volume = br.readLine().split(" ");
-		int[] a = new int[Integer.parseInt(volume[0])];
-		int[] b = new int[Integer.parseInt(volume[1])];
-		int[] c = new int[a.length + b.length];
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int n = Integer.parseInt(st.nextToken());
+		int m = Integer.parseInt(st.nextToken());
 
-		String[] arrA = br.readLine().split(" ");
-		String[] arrB = br.readLine().split(" ");
+		int[] a = new int[n];
+		int[] b = new int[m];
 
-		for (int i = 0; i < a.length; i++) {
-			c[i] = Integer.parseInt(arrA[i]);
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < n; i++) {
+			a[i] = Integer.parseInt(st.nextToken());
 		}
 
-		for (int i = 0; i < c.length - a.length; i++) {
-			c[a.length + i] = Integer.parseInt(arrB[i]);
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < m; i++) {
+			b[i] = Integer.parseInt(st.nextToken());
 		}
 
-		Arrays.sort(c);
-		for (int i = 0; i < c.length; i++) {
-			bw.write(String.valueOf(c[i]) + " ");
+		// 투포인터로 두 정렬된 배열 합치기
+		StringBuilder sb = new StringBuilder();
+		int pA = 0, pB = 0;
+		while (pA < n && pB < m) {
+			if (a[pA] <= b[pB]) {
+				sb.append(a[pA++]).append(" ");
+			} else {
+				sb.append(b[pB++]).append(" ");
+			}
 		}
 
-		bw.flush();
-		br.close();
+		while (pA < n) {
+			sb.append(a[pA++]).append(" ");
+		}
+
+		while (pB < m) {
+			sb.append(b[pB++]).append(" ");
+		}
+
+		bw.write(sb.toString());
 		bw.close();
+		br.close();
 	}
 }
